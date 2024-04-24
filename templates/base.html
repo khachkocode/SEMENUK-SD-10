@@ -1,0 +1,54 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>{% block title %}Polls{% endblock %}</title>
+		<link rel="stylesheet" href="{% static 'style.css' %}" />
+	</head>
+	<body>
+		<!--  -->
+		{% block header %}
+
+		<header>
+			<nav>
+				<li>
+					<a href="{% url 'polls:index' %}" class="btn-home">Home</a>
+				</li>
+				<li>
+					{% if user.is_authenticated %}
+					<form id="logout-form" method="post" action="{% url 'auth:logout' %}">
+						{% csrf_token %}
+						<label>
+							Logged in as {{ user.username }}
+							<button type="submit" class="btn btn-link">Logout</button>
+						</label>
+						{% else %}
+						<button class="auth-btn btn-login">
+							<a href="{% url 'auth:login' %}">Login</a>
+						</button>
+						<button class="auth-btn btn-signup">
+							<a href="{% url 'auth:signup' %}">Signup</a>
+						</button>
+						{% endif %}
+					</form>
+				</li>
+			</nav>
+		</header>
+		{% endblock %}
+
+		<main>
+			{% block content %} {% endblock %}
+			<!--  -->
+			{% if messages %}
+			<!--  -->
+			{% for message in messages %}
+			<!--  -->
+			<p class="error-message">{{ message }}</p>
+			<!--  -->
+			{% endfor %}
+			<!--  -->
+			{% endif %}
+		</main>
+	</body>
+</html>
